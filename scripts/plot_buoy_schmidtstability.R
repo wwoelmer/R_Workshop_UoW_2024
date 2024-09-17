@@ -53,6 +53,8 @@ buoy_long <- buoy_avg %>%
 ## make a plot, similar ot what we did with the CTD data where you plot all the variables, using
 ## facet_wrap(~variable) to make different panels for each variable
 
+  ### INSERT CODE ###
+
 
 ##################################################################################
 ############## now let's calculate Schmidt stability #############################
@@ -93,3 +95,5 @@ b <- ggplot(mix, aes(x = date, y = schmidt_stability)) +
   theme_bw()
 
 ggarrange(a, b)
+
+# compare to heatmaps on the limnotrack website: https://limnotrack.shinyapps.io/wqprofiler_bop/
