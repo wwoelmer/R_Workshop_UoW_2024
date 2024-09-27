@@ -37,8 +37,9 @@ fls
 
 # you can index fls to choose which file you want to look at 
 fls[1]
+  # how can you print out the name of the second file in the list?
 
-# to open a file from the diretory
+# now open a file from the diretory
 cnv_data <- read.ctd(paste0(data_dir, fls[1]))
   ## another way to read in data is by specifying the directory, instead of indexing fls
   ## on the line below, uncomment the line and write the relative path to one of the .cnv files
@@ -48,8 +49,8 @@ cnv_data <- read.ctd(paste0(data_dir, fls[1]))
 # Check the first records of the cnv data
 head(data)
 ##################################################################################
-############### why did we get this error? #######################################
-#################################################################################
+############### woah what is all that????? #######################################
+##################################################################################
 
 #################################################################################
 # moving on...
@@ -58,7 +59,7 @@ head(data)
 # pass the cnv file object into your trimming function which you ran above on line 9
 ctdTrimmed <- ctdTrim(cnv_data, # what is the name of your CTD data object
                       trim_function, # which is the name of the function, you made this one above
-                      parameters = list(depth= 0.8)) # what depth do you want to trim at (this take out everything above 0.8m)
+                      parameters = list(depth= 0.8)) # what depth do you want to trim at (this currently takes out everything above 0.8m)
 
 # save the trimmed data as a dataframe (this makes it easier to work with in R)
 data <- as.data.frame(ctdTrimmed[["data"]])
@@ -90,7 +91,7 @@ ggplot(data, aes(y = depth, x = temperature)) +
   scale_y_reverse() # we do this so that depth goes from 0 (at the top) to the bottom of the lake
 
 ################################
-### make a plot of oxygen data now instead (copy the code above and modify it)
+### make a plot of oxygen data now instead (copy the code above and modify it using the 'oxygen4' column)
 
 ## insert code #
 
