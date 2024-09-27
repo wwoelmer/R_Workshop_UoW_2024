@@ -7,8 +7,9 @@ library(ggpubr)
 # read in the buoy data csv
 buoy <- read.csv('./data/Rotorua_202202-202409_profiles.csv')
 head(buoy)
+str(buoy)
 
-# we need to format the DateTime column
+# webuoy# we need to format the DateTime column
 # because it stored both date and time, we will use as.POSIXct() (as opposed to as.Date())
 ?as.POSIXct
 buoy$DateTime <- as.POSIXct(buoy$DateTime, format = "%Y-%m-%d %H:%M:%OS")
@@ -19,16 +20,16 @@ head(buoy)
 ggplot(buoy, aes(x = DateTime, y = FlChlr, color = DptSns)) +
   geom_point()
 
-## create another plot with a different variable
+## create another plot with a different variable of your choice
   ## INSERT CODE ##
 
 ################################################################################
-# ok, that's a lot of data and it take kind of a long time to plot
+# ok, that's a lot of data and it takes kind of a long time to plot
 # let's simplify down to a daily average and round the depths to the nearest meter
 
-buoy_avg <- buoy %>%  # we're taking buoy and modifying, so we're going to create a new dataframe
+buoy_avg <- buoy %>%  # we're taking buoy and modifying it, so we're going to create a new dataframe
   mutate(date = as.Date(DateTime),  # make a column that is just the date (doesn't include time)
-         depth_rnd = floor(DptSns))  # make another column that rounds the depth to the nearest meter
+         depth_rnd = floor(DptSns))  # make another column that rounds the depths down to the nearest meter
 view(buoy_avg)
 head(buoy_avg)
 
@@ -49,8 +50,9 @@ buoy_avg <- buoy_avg %>%
 # similar to with the CTD data, it's easier to visualize all of these if we pivot to a longer format
 buoy_long <- buoy_avg %>% 
   pivot_longer(temp_C:chl_RFU, names_to = 'variable', values_to = 'value')
+head(buoy_long)
 
-## make a plot, similar ot what we did with the CTD data where you plot all the variables, using
+## make a plot, similar to what we did with the CTD data where you plot all the variables, using
 ## facet_wrap(~variable) to make different panels for each variable
 
   ### INSERT CODE ###
@@ -69,10 +71,10 @@ colnames(bty) <- c('lake', 'depth_m', 'vol_to_bottom_m3', 'vol_at_countour_m3', 
                    'model_sd_m2')
 head(bty)
 
-# the depth are negative but we don't really care about that, so let's take the negative off
+# the depths are negative but we don't really care about that, so let's take the negative off
 bty$depth_m <- abs(bty$depth_m)
 
-# this dataframe include all the lakes, so we need to subset to Rotorua only
+# this bathymetric dataframe includes all the lakes, so we need to subset to Rotorua only
 bty <- bty %>% 
   filter(lake=='Rotorua')
 
@@ -88,12 +90,23 @@ mix <- buoy_avg %>%
 # now let's make some fun plots
 a <- ggplot(mix, aes(x = date, y = thermo_depth)) +
   geom_point() +
+  geom_line() +
   theme_bw()
 
 b <- ggplot(mix, aes(x = date, y = schmidt_stability)) +
   geom_point() +
+  geom_line() +
   theme_bw()
 
 ggarrange(a, b)
 
+################################################################
+############# some discussion points ###########################
+
+# what months of the year are most likely to have a non-zero thermocline depth? why?
+# do you think Schmidt stability and thermocline depth are related? can you make a plot with Schmidt
+  # stability on the x-axis and thermocline depth on the y-axis?
+# how do you think these patterns in Schmidt stability and thermocline depth 
+  # would be different in a monomictic lake, like Okaro?
+# what other things in a lake does Schmidt stability influence?
 # compare to heatmaps on the limnotrack website: https://limnotrack.shinyapps.io/wqprofiler_bop/
